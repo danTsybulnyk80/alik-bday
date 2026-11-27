@@ -1,22 +1,23 @@
 "use strict";
+const HINT_AFTER = 3;
 // ---------------------------------------------------------------------------
 // EDIT HERE: the three questions and the photo shown at the end.
 // ---------------------------------------------------------------------------
 const QUESTIONS = [
     {
-        text: 'Здесь будет вопрос 1?',
-        answers: ['первый ответ', 'другой вариант написания'],
-        hint: 'Подсказка к вопросу 1',
+        text: 'Любимая фраза gravedigger',
+        answers: ['been to go', 'бин ту го'],
+        hint: 'been ...',
     },
     {
-        text: 'Здесь будет вопрос 2?',
-        answers: ['второй ответ'],
-        hint: 'Подсказка к вопросу 2',
+        text: 'Первый вопрос незнакомцу?',
+        answers: ['какой рейтинг'],
+        hint: 'какой....',
     },
     {
-        text: 'Здесь будет вопрос 3?',
-        answers: ['третий ответ'],
-        hint: 'Подсказка к вопросу 3',
+        text: 'Название ракеты для полёта на луну',
+        answers: ['попа'],
+        hint: 'п..а',
     },
 ];
 const PHOTO = {
@@ -54,8 +55,10 @@ const questionText = byId('question-text');
 const input = byId('answer');
 const feedback = byId('feedback');
 let current = 0;
+let attempts = 0;
 function showQuestion() {
     const question = QUESTIONS[current];
+    attempts = 0;
     progress.textContent = `Вопрос ${current + 1} из ${QUESTIONS.length}`;
     questionText.textContent = question.text;
     feedback.textContent = '';
@@ -63,7 +66,9 @@ function showQuestion() {
     input.focus();
 }
 function showWrong(question) {
-    feedback.textContent = question.hint ? `Не совсем. Подсказка: ${question.hint}` : 'Не совсем, попробуй ещё раз.';
+    attempts += 1;
+    feedback.textContent =
+        question.hint && attempts >= HINT_AFTER ? `Не совсем. Подсказка: ${question.hint}` : 'Не совсем, попробуй ещё раз.';
     // Restart the shake animation on every wrong attempt.
     card.classList.remove('shake');
     void card.offsetWidth;
@@ -103,4 +108,10 @@ form.addEventListener('submit', (event) => {
         showPhoto();
     }
 });
-showQuestion();
+// The quiz only opens after the captcha (captcha.html) has been passed in this tab.
+if (sessionStorage.getItem('alik-bday-captcha') === 'passed') {
+    showQuestion();
+}
+else {
+    location.replace('captcha.html');
+}

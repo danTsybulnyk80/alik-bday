@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка | С днём рождения, Алик!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card" id="card">
+    <section id="rating-step">
+      <p class="eyebrow">🤖 Проверка 1 из 2</p>
+      <h1>Докажи, что ты не робот</h1>
+      <p>Выбери свой рейтинг</p>
+      <div class="options" id="rating-options"></div>
+      <p class="feedback" id="rating-feedback" role="status"></p>
+    </section>
+
+    <section id="moon-step" hidden>
+      <p class="eyebrow">🤖 Проверка 2 из 2</p>
+      <h1>Отправь картинку на Луну</h1>
+      <p>Перетащи слайдер до конца</p>
+      <div class="sky" id="sky">
+        <img class="rocket" src="img/rocket.jpg" alt="">
+        <span class="moon" aria-hidden="true">🌕</span>
+      </div>
+      <input class="slider" id="slider" type="range" min="0" max="1000" value="0" aria-label="Полёт на Луну">
+      <p class="feedback" id="moon-feedback" role="status"></p>
+    </section>
+  </main>
+  <script src="js/captcha.js"></script>
+</body>
+</html>
