@@ -1,5 +1,10 @@
 "use strict";
 const HINT_AFTER = 3;
+// How long the "correct" animation plays before moving on.
+const FEEDBACK_MS = 800;
+// One confetti piece per this many square pixels of screen. Lower means more confetti.
+const CONFETTI_DENSITY = 900;
+const CONFETTI_COLORS = ['#e8457a', '#ffd24d', '#48cae4', '#7b1fa2', '#2ecc71', '#ff7b00', '#ffffff'];
 // ---------------------------------------------------------------------------
 // EDIT HERE: the three questions and the photo shown at the end.
 // ---------------------------------------------------------------------------
@@ -54,6 +59,7 @@ const progress = byId('progress');
 const questionText = byId('question-text');
 const input = byId('answer');
 const feedback = byId('feedback');
+const submit = byId('submit');
 let current = 0;
 let attempts = 0;
 function showQuestion() {
@@ -69,11 +75,71 @@ function showWrong(question) {
     attempts += 1;
     feedback.textContent =
         question.hint && attempts >= HINT_AFTER ? `Не совсем. Подсказка: ${question.hint}` : 'Не совсем, попробуй ещё раз.';
-    // Restart the shake animation on every wrong attempt.
-    card.classList.remove('shake');
-    void card.offsetWidth;
-    card.classList.add('shake');
+    animate('wrong');
     input.select();
+}
+// Plays the right/wrong answer animation on the card (see style.css).
+function animate(result) {
+    card.classList.remove('correct', 'wrong');
+    void card.offsetWidth;
+    card.classList.add(result);
+}
+// Endless, deliberately excessive confetti over the whole screen. It is meant to get in the way.
+function startConfetti() {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'confetti';
+    document.body.append(canvas);
+    const context = canvas.getContext('2d');
+    if (!context)
+        return;
+    const random = (min, max) => min + Math.random() * (max - min);
+    function createPiece(startY) {
+        const width = random(14, 34);
+        return {
+            x: random(0, canvas.width),
+            y: startY,
+            width,
+            height: width * random(0.4, 0.8),
+            speedX: random(-1.5, 1.5),
+            speedY: random(2, 6),
+            angle: random(0, Math.PI * 2),
+            spin: random(-0.15, 0.15),
+            flip: random(0, Math.PI * 2),
+            flipSpeed: random(0.05, 0.2),
+            color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+        };
+    }
+    let pieces = [];
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const count = Math.round((canvas.width * canvas.height) / CONFETTI_DENSITY);
+        // Start spread above the screen so the confetti pours in instead of appearing all at once.
+        pieces = Array.from({ length: count }, () => createPiece(random(-canvas.height, 0)));
+    }
+    function draw() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (const piece of pieces) {
+            piece.x += piece.speedX + Math.sin(piece.flip) * 1.5;
+            piece.y += piece.speedY;
+            piece.angle += piece.spin;
+            piece.flip += piece.flipSpeed;
+            if (piece.y > canvas.height + piece.width) {
+                Object.assign(piece, createPiece(-piece.width));
+            }
+            context.save();
+            context.translate(piece.x, piece.y);
+            context.rotate(piece.angle);
+            context.scale(1, Math.cos(piece.flip));
+            context.fillStyle = piece.color;
+            context.fillRect(-piece.width / 2, -piece.height / 2, piece.width, piece.height);
+            context.restore();
+        }
+        requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
 }
 function showPhoto() {
     const title = document.createElement('h1');
@@ -89,9 +155,10 @@ function showPhoto() {
     image.alt = PHOTO.caption;
     const caption = document.createElement('p');
     caption.textContent = PHOTO.caption;
-    card.classList.remove('shake');
+    card.classList.remove('correct', 'wrong');
     card.classList.add('reveal');
     card.replaceChildren(title, image, caption);
+    startConfetti();
 }
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -100,13 +167,21 @@ form.addEventListener('submit', (event) => {
         showWrong(question);
         return;
     }
-    current += 1;
-    if (current < QUESTIONS.length) {
-        showQuestion();
-    }
-    else {
-        showPhoto();
-    }
+    feedback.textContent = '';
+    animate('correct');
+    // Block a second submit while the animation plays.
+    submit.disabled = true;
+    setTimeout(() => {
+        submit.disabled = false;
+        card.classList.remove('correct');
+        current += 1;
+        if (current < QUESTIONS.length) {
+            showQuestion();
+        }
+        else {
+            showPhoto();
+        }
+    }, FEEDBACK_MS);
 });
 // The quiz only opens after the captcha (captcha.html) has been passed in this tab.
 if (sessionStorage.getItem('alik-bday-captcha') === 'passed') {

@@ -3,6 +3,8 @@
   const RATING_OPTIONS = ['0-5000', '5000-10000', '10000-15000', 'Если захочу, будет 15'];
   const CORRECT_RATING = 3;
   const PASSED_KEY = 'alik-bday-captcha';
+  // How long the "correct" animation plays before moving on.
+  const FEEDBACK_MS = 800;
 
   function byId<T extends HTMLElement>(id: string): T {
     const element = document.getElementById(id);
@@ -19,10 +21,11 @@
   const slider = byId<HTMLInputElement>('slider');
   const moonFeedback = byId<HTMLElement>('moon-feedback');
 
-  function shake(): void {
-    card.classList.remove('shake');
+  // Plays the right/wrong answer animation on the card (see style.css).
+  function animate(result: 'correct' | 'wrong'): void {
+    card.classList.remove('correct', 'wrong');
     void card.offsetWidth;
-    card.classList.add('shake');
+    card.classList.add(result);
   }
 
   RATING_OPTIONS.forEach((label, index) => {
@@ -33,11 +36,16 @@
     button.addEventListener('click', () => {
       if (index !== CORRECT_RATING) {
         ratingFeedback.textContent = 'Проверка не пройдена. Попробуй ещё раз.';
-        shake();
+        animate('wrong');
         return;
       }
-      ratingStep.hidden = true;
-      moonStep.hidden = false;
+      ratingFeedback.textContent = '';
+      animate('correct');
+      setTimeout(() => {
+        card.classList.remove('correct');
+        ratingStep.hidden = true;
+        moonStep.hidden = false;
+      }, FEEDBACK_MS);
     });
     options.append(button);
   });
@@ -56,6 +64,7 @@
       sky.style.setProperty('--progress', '0');
       moonFeedback.className = 'feedback';
       moonFeedback.textContent = 'До Луны не долетел. Тяни до конца!';
+      animate('wrong');
       return;
     }
     slider.disabled = true;
