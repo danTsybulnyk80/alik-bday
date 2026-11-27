@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Загрузка фото</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <p class="eyebrow">Только для организаторов</p>
+    <h1>Загрузка фото</h1>
+    <p>Это фото увидит Алик, когда ответит на все вопросы. Новое фото заменяет предыдущее.</p>
+    <form class="stack" id="upload-form">
+      <input id="token" type="password" aria-label="Токен GitHub" placeholder="Токен GitHub" autocomplete="off" required>
+      <input id="photo" type="file" accept="image/*" aria-label="Фото" required>
+      <img class="photo" id="preview" alt="Выбранное фото" hidden>
+      <button class="button" id="submit" type="submit">Загрузить</button>
+    </form>
+    <p class="feedback" id="status" role="status"></p>
+  </main>
+  <script src="js/upload.js"></script>
+</body>
+</html>

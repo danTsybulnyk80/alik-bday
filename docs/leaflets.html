@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Листовки | С Днём Рождения, Алик!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Marck+Script&family=Russo+One&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 0;
+      background: #444;
+      font-family: 'Comic Sans MS', 'Comic Sans', 'Marck Script', cursive;
+    }
+
+    .help {
+      max-width: 210mm;
+      margin: 0 auto 24px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font: 15px/1.5 system-ui, sans-serif;
+      color: #222;
+      background: #fff8c4;
+    }
+
+    .help button {
+      margin-top: 8px;
+      padding: 8px 20px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .page {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto 24px;
+      padding: 12mm 14mm;
+      overflow: hidden;
+      text-align: center;
+      break-after: page;
+    }
+
+    /* Sparkle overlay shared by all pages. */
+    .page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, #fff 0 1.2px, transparent 2px),
+        radial-gradient(circle, #fff9 0 2px, transparent 3px),
+        radial-gradient(circle, #ffe9 0 1px, transparent 2px);
+      background-size: 23mm 19mm, 37mm 41mm, 13mm 17mm;
+      background-position: 3mm 5mm, 11mm 17mm, 7mm 2mm;
+      pointer-events: none;
+    }
+
+    .page > * {
+      position: relative;
+    }
+
+    .roses .page-bg,
+    .page.roses {
+      background:
+        radial-gradient(circle at 15% 10%, #ff9ad5 0, transparent 40%),
+        radial-gradient(circle at 85% 90%, #ffd24d 0, transparent 45%),
+        linear-gradient(160deg, #c2185b, #7b1fa2 55%, #3a0ca3);
+    }
+
+    .page.sunset {
+      background:
+        radial-gradient(circle at 80% 15%, #fff176 0, transparent 35%),
+        linear-gradient(170deg, #00b4d8, #48cae4 30%, #ff8fab 65%, #ff4d6d);
+    }
+
+    .page.wolf {
+      background:
+        radial-gradient(circle at 50% 30%, #3d5a80 0, transparent 55%),
+        linear-gradient(180deg, #0b132b, #1c2541 60%, #000);
+    }
+
+    .corner {
+      position: absolute;
+      font-size: 22mm;
+      line-height: 1;
+    }
+
+    .corner.tl { top: 4mm; left: 4mm; }
+    .corner.tr { top: 4mm; right: 4mm; transform: scaleX(-1); }
+    .corner.bl { bottom: 4mm; left: 4mm; }
+    .corner.br { bottom: 4mm; right: 4mm; transform: scaleX(-1); }
+
+    /* WordArt, the pride of every school computer class. */
+    .wordart {
+      margin: 0;
+      font-family: 'Lobster', 'Comic Sans MS', cursive;
+      font-weight: 400;
+      line-height: 1.05;
+      color: #ffe600;
+      text-shadow:
+        -1.5px -1.5px 0 #d00000, 1.5px -1.5px 0 #d00000,
+        -1.5px 1.5px 0 #d00000, 1.5px 1.5px 0 #d00000,
+        3px 3px 0 #9d0208, 5px 5px 0 #6a040f, 7px 7px 6px #0008;
+    }
+
+    .wordart.xl { font-size: 25mm; }
+    .wordart.lg { font-size: 19mm; }
+
+    .wordart.silver {
+      color: #f1f5f9;
+      text-shadow:
+        -1.5px -1.5px 0 #1d4ed8, 1.5px -1.5px 0 #1d4ed8,
+        -1.5px 1.5px 0 #1d4ed8, 1.5px 1.5px 0 #1d4ed8,
+        3px 3px 0 #1e3a8a, 5px 5px 0 #172554, 7px 7px 6px #000a;
+    }
+
+    .script {
+      margin: 0;
+      font-family: 'Marck Script', 'Comic Sans MS', cursive;
+      font-size: 9.5mm;
+      line-height: 1.2;
+      color: #fff;
+      text-shadow: 0 0 3px #000, 1px 1px 2px #000, 0 0 10px #ff4fd8;
+    }
+
+    .script.sm { font-size: 7.5mm; }
+
+    .comic {
+      margin: 0;
+      font-size: 6mm;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    }
+
+    .slot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      cursor: pointer;
+      background: repeating-linear-gradient(45deg, #fff, #fff 6mm, #ffe4f3 6mm, #ffe4f3 12mm);
+    }
+
+    .slot img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slot img:not([src]) {
+      display: none;
+    }
+
+    .slot input {
+      display: none;
+    }
+
+    .slot-hint {
+      padding: 4mm;
+      font: 600 5mm/1.3 system-ui, sans-serif;
+      color: #9d174d;
+    }
+
+    .photo-frame {
+      width: 150mm;
+      flex: 1;
+      min-height: 0;
+      margin: 5mm 0;
+      border: 3mm ridge #ffd700;
+      border-radius: 6mm;
+      box-shadow: 0 0 0 1.5mm #d00000, 0 0 0 3mm #ffd700, 0 4mm 10mm #0009;
+    }
+
+    .photo-frame.oval {
+      width: 140mm;
+      border-radius: 50%;
+    }
+
+    .qr-frame {
+      flex: none;
+      width: 62mm;
+      height: 62mm;
+      margin: 3mm 0;
+      border: 2mm dashed #d00000;
+      border-radius: 3mm;
+      background: #fff;
+    }
+
+    .qr-frame img {
+      object-fit: contain;
+      padding: 2mm;
+      background: #fff;
+    }
+
+    .qr-row {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+    }
+
+    .finger {
+      font-size: 20mm;
+      line-height: 1;
+    }
+
+    .secret-box {
+      width: 100%;
+      margin: 3mm 0;
+      padding: 5mm 6mm;
+      border: 2mm dashed #ffe600;
+      border-radius: 5mm;
+      background: #ffffffe6;
+      box-shadow: 0 3mm 8mm #0007;
+    }
+
+    .secret-label {
+      margin: 0 0 2mm;
+      font-size: 6mm;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #d00000;
+    }
+
+    .secret {
+      min-height: 1.2em;
+      margin: 0;
+      font-family: 'Russo One', 'Arial Black', sans-serif;
+      line-height: 1.15;
+      color: #1a1a1a;
+      overflow-wrap: anywhere;
+      outline: none;
+    }
+
+    .secret.phrase { font-size: 12mm; }
+    .secret.passcode { font-size: 34mm; letter-spacing: 0.08em; }
+
+    /* On paper an empty field stays blank so it can be filled in by hand. */
+    .secret:empty::before {
+      content: attr(data-placeholder);
+      font: 400 6mm/1.3 system-ui, sans-serif;
+      letter-spacing: 0;
+      color: #aaa;
+    }
+
+    .stamp {
+      position: absolute;
+      padding: 2mm 5mm;
+      border: 1.2mm solid #d00000;
+      border-radius: 3mm;
+      font-family: 'Russo One', 'Arial Black', sans-serif;
+      font-size: 6.5mm;
+      text-transform: uppercase;
+      color: #d00000;
+      background: #ffffffd9;
+      transform: rotate(-14deg);
+    }
+
+    .burst {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 46mm;
+      height: 46mm;
+      padding: 6mm;
+      font-size: 4.6mm;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #d00000;
+      background: #ffe600;
+      clip-path: polygon(50% 0, 61% 12%, 75% 7%, 79% 21%, 93% 25%, 88% 39%, 100% 50%, 88% 61%, 93% 75%, 79% 79%, 75% 93%, 61% 88%, 50% 100%, 39% 88%, 25% 93%, 21% 79%, 7% 75%, 12% 61%, 0 50%, 12% 39%, 7% 25%, 21% 21%, 25% 7%, 39% 12%);
+      transform: rotate(12deg);
+    }
+
+    .quote {
+      margin: 0;
+      font-family: 'Marck Script', 'Comic Sans MS', cursive;
+      font-size: 9mm;
+      line-height: 1.2;
+      color: #e0e7ff;
+      text-shadow: 0 0 8px #60a5fa, 1px 1px 2px #000;
+    }
+
+    .quote cite {
+      display: block;
+      margin-top: 1mm;
+      font-size: 6mm;
+      font-style: normal;
+      color: #93c5fd;
+    }
+
+    .big-emoji {
+      font-size: 34mm;
+      line-height: 1.1;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: none;
+      }
+
+      .help,
+      .slot-hint {
+        display: none;
+      }
+
+      .page {
+        margin: 0;
+      }
+
+      .secret:empty::before {
+        content: '';
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="help">
+    <strong>Как пользоваться:</strong> кликни по рамке, чтобы вставить фото или QR-код; кликни по полю
+    с кодовой фразой или паролем и впиши текст (пустое поле напечатается пустым, можно вписать ручкой).
+    Любой текст на листовках тоже можно править прямо здесь. При печати: формат A4, поля «Нет»,
+    включить «Фон» (Background graphics).<br>
+    <button type="button" onclick="window.print()">🖨️ Печать</button>
+  </div>
+
+  <!-- Листовка 1: фото + место под QR-код -->
+  <section class="page roses" contenteditable="true" spellcheck="false">
+    <span class="corner tl">🌹</span><span class="corner tr">🌹</span>
+    <span class="corner bl">🌹</span><span class="corner br">🌹</span>
+
+    <p class="script">💖 Дорогой наш именинник 💖</p>
+    <h1 class="wordart xl">С Днём Рождения, Алик!</h1>
+
+    <label class="slot photo-frame oval" contenteditable="false">
+      <span class="slot-hint">📷 Кликни и выбери фото</span>
+      <img alt="">
+      <input type="file" accept="image/*">
+    </label>
+
+    <p class="script sm">Пусть ангел-хранитель оберегает,<br>а удача никогда не покидает! 🕊️✨</p>
+
+    <div class="qr-row">
+      <span class="finger">👉</span>
+      <label class="slot qr-frame" contenteditable="false">
+        <span class="slot-hint">QR-код сюда</span>
+        <img alt="">
+        <input type="file" accept="image/*">
+      </label>
+      <span class="finger">👈</span>
+    </div>
+    <p class="comic">Наведи камеру, именинник! Тебя ждёт сюрприз 🎁</p>
+
+    <span class="burst" style="top: 172mm; right: 3mm;">Лови открыточку от души! 💌</span>
+    <span class="stamp" style="top: 174mm; left: 3mm;">Здоровья! Счастья!</span>
+  </section>
+
+  <!-- Листовка 2: фото места + кодовая фраза -->
+  <section class="page sunset" contenteditable="true" spellcheck="false">
+    <span class="corner tl">🦋</span><span class="corner tr">🦋</span>
+    <span class="corner bl">🌷</span><span class="corner br">🌷</span>
+
+    <p class="script">🌞 Доброго денёчка и настроения! ☕</p>
+    <h1 class="wordart lg">Тебе сюда, родной!</h1>
+
+    <label class="slot photo-frame" contenteditable="false">
+      <span class="slot-hint">📍 Кликни и выбери фото места</span>
+      <img alt="">
+      <input type="file" accept="image/*">
+    </label>
+
+    <div class="secret-box">
+      <p class="secret-label">🤫 Кодовая фраза 🤫</p>
+      <p class="secret phrase" data-placeholder="Кликни и впиши кодовую фразу"></p>
+    </div>
+
+    <p class="script sm">Скажи её вслух, с выражением,<br>и будет тебе счастье! 🙏💐</p>
+
+    <span class="burst" style="top: 58mm; left: 5mm; transform: rotate(-12deg);">Только для настоящих мужчин! 💪</span>
+    <span class="stamp" style="top: 190mm; right: 4mm; transform: rotate(10deg);">Место силы</span>
+  </section>
+
+  <!-- Листовка 3: пароль -->
+  <section class="page wolf" contenteditable="true" spellcheck="false">
+    <span class="corner tl">🐺</span><span class="corner tr">🐺</span>
+    <span class="corner bl">🔥</span><span class="corner br">🔥</span>
+
+    <p class="script" style="margin-top: 8mm;">☝️ Запомни, брат ☝️</p>
+    <h1 class="wordart xl silver">Совершенно секретно</h1>
+
+    <div class="spacer"></div>
+    <div class="big-emoji">🐺🌕</div>
+    <blockquote class="quote">
+      «Пароль знает не тот, кто умный,<br>а тот, кто именинник»
+      <cite>© Волк, АУФ</cite>
+    </blockquote>
+    <div class="spacer"></div>
+
+    <div class="secret-box">
+      <p class="secret-label">🔐 Пароль 🔐</p>
+      <p class="secret passcode" data-placeholder="Кликни и впиши пароль"></p>
+    </div>
+
+    <div class="spacer"></div>
+    <p class="comic">Никому не говори. Даже маме. Особенно маме. 🤐</p>
+    <p class="script sm" style="margin: 3mm 0 10mm;">Перешли 10 друзьям, и будет тебе счастье 🍀</p>
+
+    <span class="stamp" style="top: 86mm; right: 6mm; transform: rotate(14deg);">Сила в правде</span>
+  </section>
+
+  <script>
+    // Clicking a frame opens a file picker; the chosen image fills the frame.
+    document.querySelectorAll('.slot input').forEach(function (input) {
+      input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
+        if (!file) return;
+        var slot = input.closest('.slot');
+        slot.querySelector('img').src = URL.createObjectURL(file);
+        slot.querySelector('.slot-hint').style.display = 'none';
+      });
+    });
+
+    // Only the text is editable; keep the secret fields plain.
+    document.querySelectorAll('.secret').forEach(function (field) {
+      field.addEventListener('blur', function () {
+        if (field.textContent.trim() === '') field.textContent = '';
+      });
+    });
+  </script>
+</body>
+</html>
