@@ -93,10 +93,6 @@
       background: #48cae4 linear-gradient(170deg, #00b4d8, #7fd8e8 25%, #ffe98a 45%, #ff8fab 70%, #ff4d6d);
     }
 
-    .page.wolf {
-      background: #1c2541 linear-gradient(180deg, #0b132b, #34507a 35%, #1c2541 65%, #000);
-    }
-
     .corner {
       position: absolute;
       font-size: 22mm;
@@ -123,14 +119,6 @@
 
     .wordart.xl { font-size: 25mm; }
     .wordart.lg { font-size: 19mm; }
-
-    .wordart.silver {
-      color: #f1f5f9;
-      text-shadow:
-        -1.5px -1.5px 0 #1d4ed8, 1.5px -1.5px 0 #1d4ed8,
-        -1.5px 1.5px 0 #1d4ed8, 1.5px 1.5px 0 #1d4ed8,
-        3px 3px 0 #1e3a8a, 5px 5px 0 #172554, 7px 7px 6px #000a;
-    }
 
     .script {
       margin: 0;
@@ -254,7 +242,6 @@
     }
 
     .secret.phrase { font-size: 12mm; }
-    .secret.passcode { font-size: 34mm; letter-spacing: 0.08em; }
 
     /* On paper an empty field stays blank so it can be filled in by hand. */
     .secret:empty::before {
@@ -293,32 +280,6 @@
       transform: rotate(12deg);
     }
 
-    .quote {
-      margin: 0;
-      font-family: 'Marck Script', 'Comic Sans MS', cursive;
-      font-size: 9mm;
-      line-height: 1.2;
-      color: #e0e7ff;
-      text-shadow: 0 0 8px #60a5fa, 1px 1px 2px #000;
-    }
-
-    .quote cite {
-      display: block;
-      margin-top: 1mm;
-      font-size: 6mm;
-      font-style: normal;
-      color: #93c5fd;
-    }
-
-    .big-emoji {
-      font-size: 34mm;
-      line-height: 1.1;
-    }
-
-    .spacer {
-      flex: 1;
-    }
-
     @media print {
       body {
         padding: 0;
@@ -343,7 +304,7 @@
 <body>
   <div class="help">
     <strong>Как пользоваться:</strong> кликни по рамке, чтобы вставить фото или QR-код; кликни по полю
-    с кодовой фразой или паролем и впиши текст (пустое поле напечатается пустым, можно вписать ручкой).
+    с кодовой фразой и впиши текст (пустое поле напечатается пустым, можно вписать ручкой).
     Любой текст на листовках тоже можно править прямо здесь. При печати: A4 или Letter, масштаб 100%,
     включить «Фон» (Background graphics).<br>
     <button type="button" onclick="window.print()">🖨️ Печать</button>
@@ -405,33 +366,6 @@
     <span class="stamp" style="top: 190mm; right: 4mm; transform: rotate(10deg);">Место силы</span>
   </section>
 
-  <!-- Листовка 3: пароль -->
-  <section class="page wolf" contenteditable="true" spellcheck="false">
-    <span class="corner tl">🐺</span><span class="corner tr">🐺</span>
-    <span class="corner bl">🔥</span><span class="corner br">🔥</span>
-
-    <p class="script" style="margin-top: 8mm;">☝️ Запомни, брат ☝️</p>
-    <h1 class="wordart xl silver">Совершенно секретно</h1>
-
-    <div class="spacer"></div>
-    <div class="big-emoji">🐺🌕</div>
-    <blockquote class="quote">
-      «Пароль знает не тот, кто умный,<br>а тот, кто именинник»
-      <cite>© Волк, АУФ</cite>
-    </blockquote>
-    <div class="spacer"></div>
-
-    <div class="secret-box">
-      <p class="secret-label">🔐 Пароль 🔐</p>
-      <p class="secret passcode" data-placeholder="Кликни и впиши пароль"></p>
-    </div>
-
-    <div class="spacer"></div>
-    <p class="comic">Никому не говори. Даже маме. Особенно маме. 🤐</p>
-    <p class="script sm" style="margin: 3mm 0 10mm;">Перешли 10 друзьям, и будет тебе счастье 🍀</p>
-
-    <span class="stamp" style="top: 86mm; right: 6mm; transform: rotate(14deg);">Сила в правде</span>
-  </section>
 
   <script>
     // Clicking a frame opens a file picker; the chosen image fills the frame.

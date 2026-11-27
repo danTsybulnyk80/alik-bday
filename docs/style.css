@@ -148,8 +148,10 @@ form.stack {
 /* The picture flies from the left edge to the moon as --progress goes from 0 to 1. */
 .sky {
   --progress: 0;
-  --rocket-width: 96px;
+  --rocket-width: 150px;
   --moon-width: 56px;
+  /* How much of the fire tail starts hidden behind the left edge. */
+  --tail-hidden: 60px;
   position: relative;
   height: 104px;
   margin-bottom: 16px;
@@ -164,11 +166,10 @@ form.stack {
 .rocket {
   position: absolute;
   top: 16px;
-  left: calc(8px + var(--progress) * (100% - var(--rocket-width) - var(--moon-width) - 8px));
+  left: calc(var(--progress) * (100% - var(--rocket-width) - var(--moon-width) + var(--tail-hidden)) - var(--tail-hidden));
   width: var(--rocket-width);
   height: 72px;
-  border-radius: 8px;
-  object-fit: cover;
+  transform-origin: right center;
   transition: left 0.1s linear, transform 0.8s ease-in, opacity 0.8s ease-in;
 }
 
@@ -182,7 +183,7 @@ form.stack {
 }
 
 .landed .rocket {
-  transform: translateX(60px) scale(0.1);
+  transform: translateX(40px) scale(0.1);
   opacity: 0;
 }
 
