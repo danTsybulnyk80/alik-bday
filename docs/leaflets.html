@@ -8,9 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Marck+Script&family=Russo+One&display=swap" rel="stylesheet">
   <style>
+    /* No fixed paper size: the pages are sized to fit both A4 and Letter,
+       including the margins and header/footer that iOS Safari forces. */
     @page {
-      size: A4 portrait;
-      margin: 0;
+      margin: 10mm;
     }
 
     * {
@@ -23,11 +24,11 @@
       margin: 0;
       padding: 24px 0;
       background: #444;
-      font-family: 'Comic Sans MS', 'Comic Sans', 'Marck Script', cursive;
+      font-family: 'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', 'Marck Script', cursive;
     }
 
     .help {
-      max-width: 210mm;
+      max-width: 190mm;
       margin: 0 auto 24px;
       padding: 16px 20px;
       border-radius: 12px;
@@ -49,13 +50,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 210mm;
-      height: 297mm;
+      width: 250mm;
+      height: 295mm;
       margin: 0 auto 24px;
       padding: 12mm 14mm;
       overflow: hidden;
       text-align: center;
+      /* Laid out at 250x295mm, printed at 187x221mm. */
+      zoom: 0.75;
+      break-inside: avoid;
       break-after: page;
+    }
+
+    .page:last-of-type {
+      break-after: auto;
     }
 
     /* Sparkle overlay shared by all pages. */
@@ -76,24 +84,17 @@
       position: relative;
     }
 
-    .roses .page-bg,
+    /* Opaque stops only: Safari prints transparent gradient stops as black. */
     .page.roses {
-      background:
-        radial-gradient(circle at 15% 10%, #ff9ad5 0, transparent 40%),
-        radial-gradient(circle at 85% 90%, #ffd24d 0, transparent 45%),
-        linear-gradient(160deg, #c2185b, #7b1fa2 55%, #3a0ca3);
+      background: #a21caf linear-gradient(160deg, #ff8ccf, #d81b78 25%, #8e24aa 60%, #4a1fb8 85%, #e0a030);
     }
 
     .page.sunset {
-      background:
-        radial-gradient(circle at 80% 15%, #fff176 0, transparent 35%),
-        linear-gradient(170deg, #00b4d8, #48cae4 30%, #ff8fab 65%, #ff4d6d);
+      background: #48cae4 linear-gradient(170deg, #00b4d8, #7fd8e8 25%, #ffe98a 45%, #ff8fab 70%, #ff4d6d);
     }
 
     .page.wolf {
-      background:
-        radial-gradient(circle at 50% 30%, #3d5a80 0, transparent 55%),
-        linear-gradient(180deg, #0b132b, #1c2541 60%, #000);
+      background: #1c2541 linear-gradient(180deg, #0b132b, #34507a 35%, #1c2541 65%, #000);
     }
 
     .corner {
@@ -182,7 +183,7 @@
     }
 
     .photo-frame {
-      width: 150mm;
+      width: 185mm;
       flex: 1;
       min-height: 0;
       margin: 5mm 0;
@@ -192,7 +193,7 @@
     }
 
     .photo-frame.oval {
-      width: 140mm;
+      width: 165mm;
       border-radius: 50%;
     }
 
@@ -229,7 +230,7 @@
       padding: 5mm 6mm;
       border: 2mm dashed #ffe600;
       border-radius: 5mm;
-      background: #ffffffe6;
+      background: #fff;
       box-shadow: 0 3mm 8mm #0007;
     }
 
@@ -272,7 +273,7 @@
       font-size: 6.5mm;
       text-transform: uppercase;
       color: #d00000;
-      background: #ffffffd9;
+      background: #fff;
       transform: rotate(-14deg);
     }
 
@@ -343,7 +344,7 @@
   <div class="help">
     <strong>Как пользоваться:</strong> кликни по рамке, чтобы вставить фото или QR-код; кликни по полю
     с кодовой фразой или паролем и впиши текст (пустое поле напечатается пустым, можно вписать ручкой).
-    Любой текст на листовках тоже можно править прямо здесь. При печати: формат A4, поля «Нет»,
+    Любой текст на листовках тоже можно править прямо здесь. При печати: A4 или Letter, масштаб 100%,
     включить «Фон» (Background graphics).<br>
     <button type="button" onclick="window.print()">🖨️ Печать</button>
   </div>
